@@ -16,11 +16,11 @@ export async function fetchDatabaseInstance() {
     await new Promise((resolve) => {
         console.log(`[MongoDB] Awaiting instance setup...`);
         const interval = setInterval(() => {
-            if (!instance) {
+            if (instance) {
                 return;
             }
 
-            clearImmediate(interval);
+            clearInterval(interval);
             resolve();
         }, 250);
     });
@@ -81,6 +81,7 @@ export class Database {
 
         this.db = this.client.db();
         this.generateCollections();
+        instance = this;
     }
 
     async generateCollections() {
