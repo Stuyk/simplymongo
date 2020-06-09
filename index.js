@@ -101,7 +101,7 @@ export class Database {
      * @param {String} fieldName Field we want to modify.
      * @param {Any} fieldValue Field value we want to find.
      * @param {String} collection Name of the collection.
-     * @returns {Any | null} A single document.
+     * @returns {Any} A single document.
      */
     async fetchData(fieldName, fieldValue, collection) {
         if (fieldName === '_id') {
@@ -117,7 +117,7 @@ export class Database {
      * @param {String} fieldName Field we want to modify.
      * @param {Any} fieldValue Field value we want to find.
      * @param {String} collection Name of the collection.
-     * @returns {Array | null} An array of documents.
+     * @returns {Array} An array of documents.
      */
     async fetchAllByField(fieldName, fieldValue, collection) {
         if (fieldName === '_id') {
@@ -130,7 +130,7 @@ export class Database {
             .toArray();
 
         if (results.length <= 0) {
-            return null;
+            return [];
         }
 
         return results;
