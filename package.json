@@ -1,0 +1,26 @@
+{
+    "name": "simplymongo",
+    "version": "1.0.0",
+    "description": "",
+    "main": "index.js",
+    "keywords": [
+        "mongodb"
+    ],
+    "author": "stuyk",
+    "license": "ISC",
+    "type": "module",
+    "dependencies": {
+        "mongodb": "^3.5.8"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/stuyk/simplymongo.git"
+    },
+    "prettier": {
+        "tabWidth": 4,
+        "printWidth": 120,
+        "singleQuote": true,
+        "semi": true
+    },
+    "homepage": "https://github.com/Stuyk/simplymongo#readme"
+}
