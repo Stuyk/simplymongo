@@ -9,16 +9,19 @@ let instance;
  * @return {Database} Singleton of your Database Connection
  */
 export async function fetchDatabaseInstance() {
-    if (!instance) {
-        console.log(`[MongoDB] Database has not yet been established. Waiting for connection to finish...`);
-        const interval = setInterval(() => {
-            if (!instance) {
-                return;
-            }
-
-            clearInterval(interval);
-        }, 2500);
+    if (instance) {
+        return instance;
     }
+
+    console.log(`[MongoDB] Database has not yet been established. Waiting for connection to finish...`);
+    await new Promise((resolve) => {
+        const interval = setInterval(() => {
+            if (instance) {
+                clearInterval(interval);
+                resolve();
+            }
+        }, 2500);
+    });
 
     return instance;
 }
