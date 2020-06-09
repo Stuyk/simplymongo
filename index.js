@@ -13,16 +13,17 @@ export async function fetchDatabaseInstance() {
         return instance;
     }
 
-    console.log(`[MongoDB] Database has not yet been established. Waiting for connection to finish...`);
     await new Promise((resolve) => {
+        console.log(`[MongoDB] Awaiting connection...`);
         const interval = setInterval(() => {
             if (instance) {
                 clearInterval(interval);
                 resolve();
             }
-        }, 2500);
+        }, 100);
     });
 
+    console.log(`[MongoDB] Singleton instance returned. Connection completed.`);
     return instance;
 }
 
