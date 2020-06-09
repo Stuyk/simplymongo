@@ -6,7 +6,7 @@ const ObjectID = mongodb.ObjectID;
 let instance;
 
 /**
- * @return {Database} Singleton of your Database Connection
+ * @return {Promise<Database>} Singleton of your Database Connection
  */
 export async function fetchDatabaseInstance() {
     if (instance) {
@@ -14,13 +14,15 @@ export async function fetchDatabaseInstance() {
     }
 
     await new Promise((resolve) => {
-        console.log(`[MongoDB] Awaiting connection...`);
+        console.log(`[MongoDB] Awaiting instance setup...`);
         const interval = setInterval(() => {
-            if (instance) {
-                clearInterval(interval);
-                resolve();
+            if (!instance) {
+                return;
             }
-        }, 100);
+
+            clearImmediate(interval);
+            resolve();
+        }, 250);
     });
 
     console.log(`[MongoDB] Singleton instance returned. Connection completed.`);
