@@ -16,7 +16,7 @@ export async function fetchDatabaseInstance() {
     await new Promise((resolve) => {
         console.log(`[MongoDB] Awaiting instance setup...`);
         const interval = setInterval(() => {
-            if (instance) {
+            if (!instance) {
                 return;
             }
 
