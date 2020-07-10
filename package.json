@@ -22,5 +22,8 @@
         "singleQuote": true,
         "semi": true
     },
-    "homepage": "https://github.com/Stuyk/simplymongo#readme"
+    "homepage": "https://github.com/Stuyk/simplymongo#readme",
+    "devDependencies": {
+        "jsdoc-to-markdown": "^6.0.1"
+    }
 }

@@ -66,68 +66,198 @@ const db = fetchDatabaseInstance();
 const db = simplymongo.fetchDatabaseInstance();
 ```
 
-### Inserting Data
+### Documentation
 
-document, collection, shouldReturnDocument?
+<a name="module_simplymongo"></a>
 
-```js
-async function someAsyncFunction() {
-    const result = await db.insertData({ name: 'stuyk' }, 'names', true);
-    console.log(result);
-}
-```
+-   [simplymongo](#module_simplymongo)
+    -   [.Database](#module_simplymongo.Database)
+        -   [new exports.Database(url, databasename, collections, username, password)](#new_module_simplymongo.Database_new)
+        -   [.client](#module_simplymongo.Database+client) : <code>mongodb.MongoClient</code>
+        -   [.generateCollections()](#module_simplymongo.Database+generateCollections)
+        -   [.fetchData(fieldName, fieldValue, collection)](#module_simplymongo.Database+fetchData) ⇒ <code>Any</code>
+        -   [.fetchAllByField(fieldName, fieldValue, collection)](#module_simplymongo.Database+fetchAllByField) ⇒ <code>Array</code>
+        -   [.insertData(document, collection, returnDocument)](#module_simplymongo.Database+insertData) ⇒ <code>Object</code>
+        -   [.updatePartialData(id, partialObjectData, collection)](#module_simplymongo.Database+updatePartialData)
+        -   [.deleteById(id, collection)](#module_simplymongo.Database+deleteById) ⇒ <code>Object</code>
+        -   [.fetchAllData(collection)](#module_simplymongo.Database+fetchAllData) ⇒ <code>Array.&lt;any&gt;</code>
+        -   [.selectData(collection, fieldNames)](#module_simplymongo.Database+selectData)
+        -   [.updateDataByFieldMatch(fieldName, fieldValue, partialObjectData, collection)](#module_simplymongo.Database+updateDataByFieldMatch)
+        -   [.replaceField(id, fieldName, fieldValue, collection)](#module_simplymongo.Database+replaceField)
+    -   [.fetchDatabaseInstance()](#module_simplymongo.fetchDatabaseInstance) ⇒ <code>Promise.&lt;Database&gt;</code>
 
-Result:
+<a name="module_simplymongo.Database"></a>
 
-```js
-{ _id: 5eded784f4cddb47a0bbbd40, name: 'stuyk' }
-```
+### simplymongo.Database
 
-### Updating Data
+**Kind**: static class of [<code>simplymongo</code>](#module_simplymongo)
 
-documentID, PartialObjectData, collectionName
+-   [.Database](#module_simplymongo.Database)
+    -   [new exports.Database(url, databasename, collections, username, password)](#new_module_simplymongo.Database_new)
+    -   [.client](#module_simplymongo.Database+client) : <code>mongodb.MongoClient</code>
+    -   [.generateCollections()](#module_simplymongo.Database+generateCollections)
+    -   [.fetchData(fieldName, fieldValue, collection)](#module_simplymongo.Database+fetchData) ⇒ <code>Any</code>
+    -   [.fetchAllByField(fieldName, fieldValue, collection)](#module_simplymongo.Database+fetchAllByField) ⇒ <code>Array</code>
+    -   [.insertData(document, collection, returnDocument)](#module_simplymongo.Database+insertData) ⇒ <code>Object</code>
+    -   [.updatePartialData(id, partialObjectData, collection)](#module_simplymongo.Database+updatePartialData)
+    -   [.deleteById(id, collection)](#module_simplymongo.Database+deleteById) ⇒ <code>Object</code>
+    -   [.fetchAllData(collection)](#module_simplymongo.Database+fetchAllData) ⇒ <code>Array.&lt;any&gt;</code>
+    -   [.selectData(collection, fieldNames)](#module_simplymongo.Database+selectData)
+    -   [.updateDataByFieldMatch(fieldName, fieldValue, partialObjectData, collection)](#module_simplymongo.Database+updateDataByFieldMatch)
+    -   [.replaceField(id, fieldName, fieldValue, collection)](#module_simplymongo.Database+replaceField)
 
-```js
-await db.updatePartialData('5eded784f4cddb47a0bbbd40', { name: 'not stuyk', timesUpdated: 1 }, 'names');
-```
+<a name="new_module_simplymongo.Database_new"></a>
 
-### Delete Data
+#### new exports.Database(url, databasename, collections, username, password)
 
-documentID, collection
+Create a Database Connection
 
-```js
-await db.deleteById(`5eded784f4cddb47a0bbbd40`, 'names');
-```
+| Param        | Type                              | Default       | Description                                |
+| ------------ | --------------------------------- | ------------- | ------------------------------------------ |
+| url          | <code>string</code>               |               | mongodb://localhost:27017                  |
+| databasename | <code>string</code>               |               | Name of the database to store collections. |
+| collections  | <code>Array.&lt;string&gt;</code> |               | Collections to create.                     |
+| username     |                                   | <code></code> |                                            |
+| password     |                                   | <code></code> |                                            |
 
-### Fetch All Data In Collection
+<a name="module_simplymongo.Database+client"></a>
 
-collectionName
+#### database.client : <code>mongodb.MongoClient</code>
 
-```js
-const names = await db.fetchAllData('names');
-console.log(names);
-```
+**Kind**: instance property of [<code>Database</code>](#module_simplymongo.Database)
+<a name="module_simplymongo.Database+generateCollections"></a>
 
-### Select All Data by Field Names
+#### database.generateCollections()
 
-collectionName, fieldNamesArray
+Used to generate collections.
 
-```js
-const selected = db.selectData('names', ['name']);
-```
+**Kind**: instance method of [<code>Database</code>](#module_simplymongo.Database)
+<a name="module_simplymongo.Database+fetchData"></a>
 
-### Fetch All Data by Field
+#### database.fetchData(fieldName, fieldValue, collection) ⇒ <code>Any</code>
 
-fieldName, fieldValue, collection
+**Kind**: instance method of [<code>Database</code>](#module_simplymongo.Database)
+**Returns**: <code>Any</code> - A single document.
 
-```js
-const result = await db.fetchAllByField('name', 'stuyk', 'names');
-```
+| Param      | Type                | Description                  |
+| ---------- | ------------------- | ---------------------------- |
+| fieldName  | <code>String</code> | Field we want to select.     |
+| fieldValue | <code>Any</code>    | Field value we want to find. |
+| collection | <code>String</code> | Name of the collection.      |
 
-### Fetch One Set of Data with Specific Value
+<a name="module_simplymongo.Database+fetchAllByField"></a>
 
-fieldName, fieldValue, collection
+#### database.fetchAllByField(fieldName, fieldValue, collection) ⇒ <code>Array</code>
 
-```js
-const result = await db.fetchData('name', 'stuyk', 'names');
-```
+Fetch all with a specific field and a specific value.
+
+**Kind**: instance method of [<code>Database</code>](#module_simplymongo.Database)
+**Returns**: <code>Array</code> - An array of documents.
+
+| Param      | Type                | Description                  |
+| ---------- | ------------------- | ---------------------------- |
+| fieldName  | <code>String</code> | Field we want to modify.     |
+| fieldValue | <code>Any</code>    | Field value we want to find. |
+| collection | <code>String</code> | Name of the collection.      |
+
+<a name="module_simplymongo.Database+insertData"></a>
+
+#### database.insertData(document, collection, returnDocument) ⇒ <code>Object</code>
+
+Insert a document and return the ID.
+
+**Kind**: instance method of [<code>Database</code>](#module_simplymongo.Database)
+**Returns**: <code>Object</code> - Document
+
+| Param          | Type                 | Default            |
+| -------------- | -------------------- | ------------------ |
+| document       | <code>\*</code>      |                    |
+| collection     | <code>\*</code>      |                    |
+| returnDocument | <code>Boolean</code> | <code>false</code> |
+
+<a name="module_simplymongo.Database+updatePartialData"></a>
+
+#### database.updatePartialData(id, partialObjectData, collection)
+
+Update an ID in the database partially.
+
+**Kind**: instance method of [<code>Database</code>](#module_simplymongo.Database)
+
+| Param             | Type            |
+| ----------------- | --------------- |
+| id                | <code>\*</code> |
+| partialObjectData | <code>\*</code> |
+| collection        | <code>\*</code> |
+
+<a name="module_simplymongo.Database+deleteById"></a>
+
+#### database.deleteById(id, collection) ⇒ <code>Object</code>
+
+Delete data by id.
+
+**Kind**: instance method of [<code>Database</code>](#module_simplymongo.Database)
+
+| Param      | Type                |
+| ---------- | ------------------- |
+| id         | <code>String</code> |
+| collection | <code>String</code> |
+
+<a name="module_simplymongo.Database+fetchAllData"></a>
+
+#### database.fetchAllData(collection) ⇒ <code>Array.&lt;any&gt;</code>
+
+Fetch all data in a collection.
+
+**Kind**: instance method of [<code>Database</code>](#module_simplymongo.Database)
+
+| Param      | Type                |
+| ---------- | ------------------- |
+| collection | <code>String</code> |
+
+<a name="module_simplymongo.Database+selectData"></a>
+
+#### database.selectData(collection, fieldNames)
+
+Select specific fields from the collection; and return all data.
+
+**Kind**: instance method of [<code>Database</code>](#module_simplymongo.Database)
+
+| Param      | Type                              |
+| ---------- | --------------------------------- |
+| collection | <code>String</code>               |
+| fieldNames | <code>Array.&lt;String&gt;</code> |
+
+<a name="module_simplymongo.Database+updateDataByFieldMatch"></a>
+
+#### database.updateDataByFieldMatch(fieldName, fieldValue, partialObjectData, collection)
+
+Update partial data based on other parameters.
+
+**Kind**: instance method of [<code>Database</code>](#module_simplymongo.Database)
+
+| Param             | Type                | Description       |
+| ----------------- | ------------------- | ----------------- |
+| fieldName         | <code>String</code> |                   |
+| fieldValue        | <code>String</code> |                   |
+| partialObjectData | <code>Object</code> | merely an example |
+| collection        | <code>String</code> |                   |
+
+<a name="module_simplymongo.Database+replaceField"></a>
+
+#### database.replaceField(id, fieldName, fieldValue, collection)
+
+**Kind**: instance method of [<code>Database</code>](#module_simplymongo.Database)
+
+| Param      | Type                |
+| ---------- | ------------------- |
+| id         | <code>String</code> |
+| fieldName  | <code>String</code> |
+| fieldValue | <code>any</code>    |
+| collection | <code>String</code> |
+
+<a name="module_simplymongo.fetchDatabaseInstance"></a>
+
+### simplymongo.fetchDatabaseInstance() ⇒ <code>Promise.&lt;Database&gt;</code>
+
+**Kind**: static method of [<code>simplymongo</code>](#module_simplymongo)
+**Returns**: <code>Promise.&lt;Database&gt;</code> - Singleton of your Database Connection

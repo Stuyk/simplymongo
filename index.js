@@ -6,6 +6,10 @@ const ObjectID = mongodb.ObjectID;
 let instance;
 
 /**
+ * @module simplymongo
+ */
+
+/**
  * @return {Promise<Database>} Singleton of your Database Connection
  */
 export async function fetchDatabaseInstance() {
