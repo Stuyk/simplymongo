@@ -56,8 +56,8 @@ export class Database {
                 useUnifiedTopology: true,
                 useNewUrlParser: true,
                 auth: {
-                    user: config.dbAccount,
-                    password: config.dbPass,
+                    user: username,
+                    password: password,
                 },
             });
         } else {
