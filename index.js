@@ -48,10 +48,11 @@ export class Database {
         /** @type {mongodb.MongoClient} */
         this.client = null;
         this.collections = collections;
+        this.databaseName = databasename;
 
         if (username && password) {
             console.log(`[MongoDB] Establishing connection with username and password.`);
-            this.client = new MongoClient('mongodb://localhost:27017', {
+            this.client = new MongoClient(url, {
                 useUnifiedTopology: true,
                 useNewUrlParser: true,
                 auth: {
@@ -61,7 +62,7 @@ export class Database {
             });
         } else {
             console.log(`[MongoDB] Establishing connection without using a username or password.`);
-            this.client = new MongoClient('mongodb://localhost:27017', {
+            this.client = new MongoClient(url, {
                 useUnifiedTopology: true,
                 useNewUrlParser: true,
             });
@@ -79,11 +80,14 @@ export class Database {
             }
         });
 
-        this.db = this.client.db();
+        this.db = this.client.db(this.databaseName);
         this.generateCollections();
         instance = this;
     }
 
+    /**
+     * Used to generate collections.
+     */
     async generateCollections() {
         if (this.collections.length <= 0) {
             console.log(`[MongoDB] No collections were specified for creation.`);
@@ -99,7 +103,7 @@ export class Database {
     }
 
     /**
-     * @param {String} fieldName Field we want to modify.
+     * @param {String} fieldName Field we want to select.
      * @param {Any} fieldValue Field value we want to find.
      * @param {String} collection Name of the collection.
      * @returns {Any} A single document.
@@ -115,6 +119,7 @@ export class Database {
     }
 
     /**
+     * Fetch all with a specific field and a specific value.
      * @param {String} fieldName Field we want to modify.
      * @param {Any} fieldValue Field value we want to find.
      * @param {String} collection Name of the collection.
@@ -155,7 +160,7 @@ export class Database {
     }
 
     /**
-     *
+     * Update an ID in the database partially.
      * @param {*} id
      * @param {*} partialObjectData
      * @param {*} collection
@@ -168,8 +173,9 @@ export class Database {
 
     /**
      * Delete data by id.
-     * @param {*} id
-     * @param {*} collection
+     * @param {String} id
+     * @param {String} collection
+     * @returns {{}}
      */
     async deleteById(id, collection) {
         await this.db.collection(collection).findOneAndDelete({ _id: ObjectID(id) });
@@ -177,7 +183,8 @@ export class Database {
 
     /**
      * Fetch all data in a collection.
-     * @param {*} collection
+     * @param {String} collection
+     * @returns {Array<any>}
      */
     async fetchAllData(collection) {
         return await this.db.collection(collection).find().toArray();
@@ -185,8 +192,8 @@ export class Database {
 
     /**
      * Select specific fields from the collection; and return all data.
-     * @param {*} collection
-     * @param {*} fieldNames
+     * @param {String} collection
+     * @param {Array<String>} fieldNames
      */
     async selectData(collection, fieldNames) {
         const selectData = {
@@ -206,10 +213,10 @@ export class Database {
 
     /**
      * Update partial data based on other parameters.
-     * @param {*} fieldName
-     * @param {*} fieldValue
+     * @param {String} fieldName
+     * @param {String} fieldValue
      * @param {{name: 'stuyk'}} partialObjectData merely an example
-     * @param {*} collection
+     * @param {String} collection
      */
     async updateDataByFieldMatch(fieldName, fieldValue, partialObjectData, collection) {
         if (fieldName === '_id') {
@@ -223,10 +230,10 @@ export class Database {
 
     /**
      *
-     * @param {*} id
-     * @param {*} fieldName
-     * @param {*} fieldValue
-     * @param {*} collection
+     * @param {String} id
+     * @param {String} fieldName
+     * @param {any} fieldValue
+     * @param {String} collection
      */
     async replaceField(oldValue, fieldName, fieldValue, collection) {
         await this.db
