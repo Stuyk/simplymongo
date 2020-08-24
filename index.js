@@ -100,7 +100,13 @@ export class Database {
 
         for (let i = 0; i < this.collections.length; i++) {
             const collectionName = this.collections[i];
-            await this.db.createCollection(collectionName);
+            await this.db.createCollection(
+                collectionName, 
+                {},
+                (err, res) => {
+                    if(err) console.log(`[MongoDB] Error occurred when creating collection '${collectionName}' (${err.code}: ${err.codeName})`);
+                }
+            );
         }
 
         console.log(`[MongoDB] Connection Complete! Utilizing ${this.collections.length} collections.`);
