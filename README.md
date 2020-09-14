@@ -1,263 +1,163 @@
-# What is this?
+Simply Mongo is the simplest way to use MongoDB without knowing how to use MongoDB.
 
-Simply Mongo is just a wrapper for the original MongoDB interface.
-
-This package will let you spin up a database in seconds.
+Store your client data in collections and fetch and modify data easily.
 
 Originally created for the https://altv.mp/ community.
 
-Utilizes ES6.
-
 # Installation
 
+## Prerequisites
+
+-   NodeJS 13+
+-   ES6 Project with Modules
+-   [A MongoDB Server](https://www.mongodb.com/try/download/community)
+
+## Install
+
 ```
-npm install simplymongo
+$ npm install simplymongo
 ```
 
-# Usage
+# Starting Usage
 
-### Importing
+Here are some generalized steps for getting started.
+
+1. Add callback for ready statement.
+2. Create `new sm.Database`.
+3. Connection establishment will trigger ready statement.
+4. Ready statement imports rest of the files.
+5. Establish database instances where needed with `sm.fetchDatabaseInstance()`.
+
+Additional information can be found below. 👇🏻
+
+## 🔽 Importing
+
+I recommend importing the entire library of `simplymongo`.
 
 ```js
-import { Database from fetchDatabaseInstance } from 'simplymongo';
-
-// or
-
-import * as simplymongo from 'simplymongo';
+import * as sm from 'simplymongo';
 ```
 
-### Initializing your Database connection. No Authorization.
+## 🔗 Establish Connection
 
-url, databasename, collectionsToCreate
+After a connection is established. You may use `sm.onReady` to listen for the ready status.
 
 ```js
-new Database('mongodb://localhost:27017', 'databasename', ['names', 'of', 'collections']);
+import * as sm from 'simplymongo';
 
-// or;
+new sm.Database('mongodb://localhost:27017', 'databasename', ['accounts', 'vehicles', 'characters']);
 
-new simplymongo.Database('mongodb://localhost:27017', 'databasename', ['names', 'of', 'collections']);
+// OR
+new sm.Database('mongodb://localhost:27017', 'databasename', ['accounts', 'vehicles', 'characters'], 'user', 'pass');
 ```
 
-### Initializing your Database connection. Authorization.
+## 🤝🏼 Handling Connection to Simply Mongo
 
-url, databasename, collectionsToCreate, username, password
+There is an onReady callback register that will assist you establishing Database connection before loading other files.
+
+Register callback with this function, then import the rest of your files.
+
+**main.js**
 
 ```js
-new Database('mongodb://localhost:27017', 'databasename', ['names', 'of', 'collections'], 'username', 'password');
+import * as sm from 'simplymongo';
 
-// or;
+sm.onReady(loadRestOfCode);
 
-new simplymongo.Database(
-    'mongodb://localhost:27017',
-    'databasename',
-    ['names', 'of', 'collections'],
-    'username',
-    'password'
-);
+async function loadRestOfCode() {
+    await import('somefile');
+}
 ```
 
-### Fetching Database Instance After Initialization
+**somefile.js**
 
 ```js
-const db = fetchDatabaseInstance();
+import * as sm from 'simplymongo';
 
-// or;
+const db = sm.getDatabase();
 
-const db = simplymongo.fetchDatabaseInstance();
+// OR
+// No Params Required if fetching established db.
+const db = new sm.Database();
 ```
 
-### Documentation
+## ♻️ Fetching Database Instance after Connection
 
-<a name="module_simplymongo"></a>
+This no longer requires an wait.
 
--   [simplymongo](#module_simplymongo)
-    -   [.Database](#module_simplymongo.Database)
-        -   [new exports.Database(url, databasename, collections, username, password)](#new_module_simplymongo.Database_new)
-        -   [.client](#module_simplymongo.Database+client) : <code>mongodb.MongoClient</code>
-        -   [.generateCollections()](#module_simplymongo.Database+generateCollections)
-        -   [.fetchData(fieldName, fieldValue, collection)](#module_simplymongo.Database+fetchData) ⇒ <code>Any</code>
-        -   [.fetchAllByField(fieldName, fieldValue, collection)](#module_simplymongo.Database+fetchAllByField) ⇒ <code>Array</code>
-        -   [.insertData(document, collection, returnDocument)](#module_simplymongo.Database+insertData) ⇒ <code>Object</code>
-        -   [.updatePartialData(id, partialObjectData, collection)](#module_simplymongo.Database+updatePartialData)
-        -   [.deleteById(id, collection)](#module_simplymongo.Database+deleteById) ⇒ <code>Object</code>
-        -   [.fetchAllData(collection)](#module_simplymongo.Database+fetchAllData) ⇒ <code>Array.&lt;any&gt;</code>
-        -   [.selectData(collection, fieldNames)](#module_simplymongo.Database+selectData)
-        -   [.updateDataByFieldMatch(fieldName, fieldValue, partialObjectData, collection)](#module_simplymongo.Database+updateDataByFieldMatch)
-        -   [.replaceField(id, fieldName, fieldValue, collection)](#module_simplymongo.Database+replaceField)
-    -   [.fetchDatabaseInstance()](#module_simplymongo.fetchDatabaseInstance) ⇒ <code>Promise.&lt;Database&gt;</code>
+Use `sm` first and load the rest of your files.
 
-<a name="module_simplymongo.Database"></a>
+Rest of your files will automatically fetch the correct instance.
 
-### simplymongo.Database
+**somefile.js**
 
-**Kind**: static class of [<code>simplymongo</code>](#module_simplymongo)
+```js
+import * as sm from 'simplymongo';
 
--   [.Database](#module_simplymongo.Database)
-    -   [new exports.Database(url, databasename, collections, username, password)](#new_module_simplymongo.Database_new)
-    -   [.client](#module_simplymongo.Database+client) : <code>mongodb.MongoClient</code>
-    -   [.generateCollections()](#module_simplymongo.Database+generateCollections)
-    -   [.fetchData(fieldName, fieldValue, collection)](#module_simplymongo.Database+fetchData) ⇒ <code>Any</code>
-    -   [.fetchAllByField(fieldName, fieldValue, collection)](#module_simplymongo.Database+fetchAllByField) ⇒ <code>Array</code>
-    -   [.insertData(document, collection, returnDocument)](#module_simplymongo.Database+insertData) ⇒ <code>Object</code>
-    -   [.updatePartialData(id, partialObjectData, collection)](#module_simplymongo.Database+updatePartialData)
-    -   [.deleteById(id, collection)](#module_simplymongo.Database+deleteById) ⇒ <code>Object</code>
-    -   [.fetchAllData(collection)](#module_simplymongo.Database+fetchAllData) ⇒ <code>Array.&lt;any&gt;</code>
-    -   [.selectData(collection, fieldNames)](#module_simplymongo.Database+selectData)
-    -   [.updateDataByFieldMatch(fieldName, fieldValue, partialObjectData, collection)](#module_simplymongo.Database+updateDataByFieldMatch)
-    -   [.replaceField(id, fieldName, fieldValue, collection)](#module_simplymongo.Database+replaceField)
+const db = sm.getDatabase();
 
-<a name="new_module_simplymongo.Database_new"></a>
+// OR
+// No Params Required if fetching established db.
+const db = new sm.Database();
+```
 
-#### new exports.Database(url, databasename, collections, username, password)
+## 📝 Regular Usage
 
-Create a Database Connection
+These are just some general examples of deleting, updating, etc.
 
-| Param        | Type                              | Default       | Description                                |
-| ------------ | --------------------------------- | ------------- | ------------------------------------------ |
-| url          | <code>string</code>               |               | mongodb://localhost:27017                  |
-| databasename | <code>string</code>               |               | Name of the database to store collections. |
-| collections  | <code>Array.&lt;string&gt;</code> |               | Collections to create.                     |
-| username     |                                   | <code></code> |                                            |
-| password     |                                   | <code></code> |                                            |
+Think of this as your basic CRUD lesson.
 
-<a name="module_simplymongo.Database+client"></a>
+This example is targetting usage with [https://altv.mp/](https://altv.mp/)
 
-#### database.client : <code>mongodb.MongoClient</code>
+**Check `./example/example.js` for more explanation.**
 
-**Kind**: instance property of [<code>Database</code>](#module_simplymongo.Database)
-<a name="module_simplymongo.Database+generateCollections"></a>
+```js
+import * as sm from 'simplymongo';
 
-#### database.generateCollections()
+const db = sm.getDatabase();
 
-Used to generate collections.
+async function someAsyncFunction(player) {
+    // We can now use player.data.id to update any changes to this document.
+    player.data.money = 50000;
+    await db.updatePartialData(player.data.id, { money: player.data.money }, 'accounts');
+}
 
-**Kind**: instance method of [<code>Database</code>](#module_simplymongo.Database)
-<a name="module_simplymongo.Database+fetchData"></a>
+// Let's assume we're looking for this player's id now.
+async function someUsernamePassed(player) {
+    // Returns a document with { _id, username, bank }
+    player.data = await db.insertData({ username: 'johnny', bank: 0 }, 'accounts', true);
 
-#### database.fetchData(fieldName, fieldValue, collection) ⇒ <code>Any</code>
+    // Find the username in the database
+    const matches = await db.fetchAllByField('username', player.data.username, 'accounts');
 
-**Kind**: instance method of [<code>Database</code>](#module_simplymongo.Database)
-**Returns**: <code>Any</code> - A single document.
+    // Check if it exists. Create it if it doe snot.
+    if (matches.length <= 0) {
+        // Account does not exist. Create it.
+        player.data = await db.insertData({ username: 'johnny2' }, 'accounts', true);
+    } else {
+        // Account exists. Assign to player object.
+        player.data = matches[0];
+    }
 
-| Param      | Type                | Description                  |
-| ---------- | ------------------- | ---------------------------- |
-| fieldName  | <code>String</code> | Field we want to select.     |
-| fieldValue | <code>Any</code>    | Field value we want to find. |
-| collection | <code>String</code> | Name of the collection.      |
+    // Create money element and update bank element.
+    player.data.money = 50000;
+    player.data.bank = 10;
 
-<a name="module_simplymongo.Database+fetchAllByField"></a>
+    // Update two entries for a player.
+    await db.updatePartialData(player.data.id, { money: player.data.money, bank: player.data.bank }, 'accounts');
 
-#### database.fetchAllByField(fieldName, fieldValue, collection) ⇒ <code>Array</code>
+    // Update all entries for a player.
+    await db.updatePartialData(player.data.id, { ...player.data }, 'accounts');
 
-Fetch all with a specific field and a specific value.
+    // Delete the account!
+    await db.deleteById(player.data._id.toString(), 'accounts');
 
-**Kind**: instance method of [<code>Database</code>](#module_simplymongo.Database)
-**Returns**: <code>Array</code> - An array of documents.
+    // Fetch all accounts in the accounts collection.
+    const accounts = await db.fetchAllData('accounts');
 
-| Param      | Type                | Description                  |
-| ---------- | ------------------- | ---------------------------- |
-| fieldName  | <code>String</code> | Field we want to modify.     |
-| fieldValue | <code>Any</code>    | Field value we want to find. |
-| collection | <code>String</code> | Name of the collection.      |
-
-<a name="module_simplymongo.Database+insertData"></a>
-
-#### database.insertData(document, collection, returnDocument) ⇒ <code>Object</code>
-
-Insert a document and return the ID.
-
-**Kind**: instance method of [<code>Database</code>](#module_simplymongo.Database)
-**Returns**: <code>Object</code> - Document
-
-| Param          | Type                 | Default            |
-| -------------- | -------------------- | ------------------ |
-| document       | <code>\*</code>      |                    |
-| collection     | <code>\*</code>      |                    |
-| returnDocument | <code>Boolean</code> | <code>false</code> |
-
-<a name="module_simplymongo.Database+updatePartialData"></a>
-
-#### database.updatePartialData(id, partialObjectData, collection)
-
-Update an ID in the database partially.
-
-**Kind**: instance method of [<code>Database</code>](#module_simplymongo.Database)
-
-| Param             | Type            |
-| ----------------- | --------------- |
-| id                | <code>\*</code> |
-| partialObjectData | <code>\*</code> |
-| collection        | <code>\*</code> |
-
-<a name="module_simplymongo.Database+deleteById"></a>
-
-#### database.deleteById(id, collection) ⇒ <code>Object</code>
-
-Delete data by id.
-
-**Kind**: instance method of [<code>Database</code>](#module_simplymongo.Database)
-
-| Param      | Type                |
-| ---------- | ------------------- |
-| id         | <code>String</code> |
-| collection | <code>String</code> |
-
-<a name="module_simplymongo.Database+fetchAllData"></a>
-
-#### database.fetchAllData(collection) ⇒ <code>Array.&lt;any&gt;</code>
-
-Fetch all data in a collection.
-
-**Kind**: instance method of [<code>Database</code>](#module_simplymongo.Database)
-
-| Param      | Type                |
-| ---------- | ------------------- |
-| collection | <code>String</code> |
-
-<a name="module_simplymongo.Database+selectData"></a>
-
-#### database.selectData(collection, fieldNames)
-
-Select specific fields from the collection; and return all data.
-
-**Kind**: instance method of [<code>Database</code>](#module_simplymongo.Database)
-
-| Param      | Type                              |
-| ---------- | --------------------------------- |
-| collection | <code>String</code>               |
-| fieldNames | <code>Array.&lt;String&gt;</code> |
-
-<a name="module_simplymongo.Database+updateDataByFieldMatch"></a>
-
-#### database.updateDataByFieldMatch(fieldName, fieldValue, partialObjectData, collection)
-
-Update partial data based on other parameters.
-
-**Kind**: instance method of [<code>Database</code>](#module_simplymongo.Database)
-
-| Param             | Type                | Description       |
-| ----------------- | ------------------- | ----------------- |
-| fieldName         | <code>String</code> |                   |
-| fieldValue        | <code>String</code> |                   |
-| partialObjectData | <code>Object</code> | merely an example |
-| collection        | <code>String</code> |                   |
-
-<a name="module_simplymongo.Database+replaceField"></a>
-
-#### database.replaceField(id, fieldName, fieldValue, collection)
-
-**Kind**: instance method of [<code>Database</code>](#module_simplymongo.Database)
-
-| Param      | Type                |
-| ---------- | ------------------- |
-| id         | <code>String</code> |
-| fieldName  | <code>String</code> |
-| fieldValue | <code>any</code>    |
-| collection | <code>String</code> |
-
-<a name="module_simplymongo.fetchDatabaseInstance"></a>
-
-### simplymongo.fetchDatabaseInstance() ⇒ <code>Promise.&lt;Database&gt;</code>
-
-**Kind**: static method of [<code>simplymongo</code>](#module_simplymongo)
-**Returns**: <code>Promise.&lt;Database&gt;</code> - Singleton of your Database Connection
+    for (let i = 0; i < accounts.length; i++) {
+        const account = accounts[i];
+        console.log(account);
+    }
+}
+```

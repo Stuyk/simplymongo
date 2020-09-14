@@ -4,32 +4,41 @@ const MongoClient = mongodb.MongoClient;
 const ObjectID = mongodb.ObjectID;
 
 let instance;
+let onReadyCallbacks = [];
 
 /**
  * @module simplymongo
  */
 
 /**
- * @return {Promise<Database>} Singleton of your Database Connection
+ * Single use event that registers a callback for onReady.
+ * Load all other functions, imports, etc. after this is ready.
+ *
+ * @param  {Function} callback
  */
-export async function fetchDatabaseInstance() {
-    if (instance) {
-        return instance;
+export function onReady(callback) {
+    if (typeof callback !== 'function') {
+        throw new Error(`Function for callback onReady is not a function.`);
     }
 
-    await new Promise((resolve) => {
-        console.log(`[MongoDB] Awaiting instance setup...`);
-        const interval = setInterval(() => {
-            if (!instance) {
-                return;
-            }
+    const index = onReadyCallbacks.findIndex((func) => func === callback);
+    if (index !== -1) {
+        throw new Error(`Function already exists in callback.`);
+    }
 
-            clearInterval(interval);
-            resolve();
-        }, 250);
-    });
+    onReadyCallbacks.push(callback);
+}
 
-    console.log(`[MongoDB] Singleton instance returned. Connection completed.`);
+/**
+ * Return an instance of the Database after Database is ready.
+ *
+ * @return {Database} Singleton of your Database Connection
+ */
+export function getDatabase() {
+    if (!instance) {
+        throw new Error('Create a Database instance first.');
+    }
+
     return instance;
 }
 
@@ -87,6 +96,10 @@ export class Database {
         this.db = this.client.db(this.databaseName);
         this.generateCollections();
         instance = this;
+
+        for (let i = 0; i < onReadyCallbacks.length; i++) {
+            onReadyCallbacks[i]();
+        }
     }
 
     /**
@@ -101,10 +114,11 @@ export class Database {
         for (let i = 0; i < this.collections.length; i++) {
             const collectionName = this.collections[i];
             await this.db.createCollection(collectionName, {}, (err, res) => {
-                if (err)
-                    console.log(
-                        `[MongoDB] Error occurred when creating collection '${collectionName}' (${err.code}: ${err.codeName})`
-                    );
+                if (err) {
+                    console.log(`[MongoDB] Collection '${collectionName}' exists. (${err.code}: ${err.codeName})`);
+                } else {
+                    console.log(`[MongoDB] Created new collection '${collectionName}'`);
+                }
             });
         }
 
