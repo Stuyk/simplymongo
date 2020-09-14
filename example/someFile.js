@@ -1,4 +1,4 @@
-import * as sm from '../index.js';
+import * as sm from '../index.js'; // import * as sm from 'simplymongo';
 
 const db = sm.getDatabase();
 
