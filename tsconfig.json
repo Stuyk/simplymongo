@@ -10,8 +10,10 @@
         "baseUrl": ".",
         "typeRoots": ["."],
         "types": [],
-        "noEmit": true,
-        "forceConsistentCasingInFileNames": true
+        "forceConsistentCasingInFileNames": true,
+        "declaration": true,
+        "allowJs": true,
+        "emitDeclarationOnly": true
     },
-    "files": ["types/index.d.ts"]
+    "files": ["index.js"]
 }

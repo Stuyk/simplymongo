@@ -23,18 +23,12 @@ export class Database {
      * @param  {string | null} username=null
      * @param  {string | null} password=null
      */
-    constructor(
-        url: string,
-        databasename: string,
-        collections?: Array<string>,
-        username?: string | null,
-        password?: string | null
-    );
-    establishingConnection: boolean;
+    constructor(url: string, databasename: string, collections?: Array<string>, username?: string | null, password?: string | null);
+    establishingConnection: boolean | undefined;
     /** @type {mongodb.MongoClient} */
     client: any;
-    collections: string[];
-    databaseName: string;
+    collections: string[] | undefined;
+    databaseName: string | undefined;
     establishConnection(): Promise<void>;
     db: any;
     /**
@@ -96,14 +90,9 @@ export class Database {
      * @param {{name: 'stuyk'}} partialObjectData merely an example
      * @param {String} collection
      */
-    updateDataByFieldMatch(
-        fieldName: string,
-        fieldValue: string,
-        partialObjectData: {
-            name: 'stuyk';
-        },
-        collection: string
-    ): Promise<void>;
+    updateDataByFieldMatch(fieldName: string, fieldValue: string, partialObjectData: {
+        name: 'stuyk';
+    }, collection: string): Promise<void>;
     /**
      *
      * @param {String} oldValue
