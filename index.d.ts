@@ -23,7 +23,13 @@ export class Database {
      * @param  {string | null} username=null
      * @param  {string | null} password=null
      */
-    constructor(url: string, databasename: string, collections?: Array<string>, username?: string | null, password?: string | null);
+    constructor(
+        url: string,
+        databasename: string,
+        collections?: Array<string>,
+        username?: string | null,
+        password?: string | null
+    );
     establishingConnection: boolean | undefined;
     /** @type {mongodb.MongoClient} */
     client: any;
@@ -39,58 +45,77 @@ export class Database {
      * @param {string} fieldName Field we want to select.
      * @param {any} fieldValue Field value we want to find.
      * @param {string} collection Name of the collection.
-     * @returns {Promise<{}>} A single document.
+     * @returns {Promise<T>} A single document.
+     * @template T
      */
-    fetchData(fieldName: string, fieldValue: any, collection: string): Promise<{}>;
+    fetchData<T>(fieldName: string, fieldValue: any, collection: string): Promise<T>;
     /**
      * Fetch all with a specific field and a specific value.
      * @param {string} fieldName Field we want to modify.
      * @param {any} fieldValue Field value we want to find.
      * @param {string} collection Name of the collection.
-     * @returns {Promise<Array<{}>>} An array of documents.
+     * @returns {Promise<Array<T>>} An array of documents.
+     * @template T
      */
-    fetchAllByField(fieldName: string, fieldValue: any, collection: string): Promise<Array<{}>>;
+    fetchAllByField<T_1>(fieldName: string, fieldValue: any, collection: string): Promise<T_1[]>;
     /**
      * Insert a document and return the ID.
      * @param {{}} document
      * @param {string} collection
      * @param {boolean} returnDocument
-     * @returns {Promise<{}>} Document
+     * @returns {Promise<{T}>} Document
+     * @template T
      */
-    insertData(document: {}, collection: string, returnDocument?: boolean): Promise<{}>;
+    insertData<T_2>(
+        document: {},
+        collection: string,
+        returnDocument?: boolean
+    ): Promise<{
+        T: any;
+    }>;
     /**
      * Update an ID in the database partially.
      * @param {string} id
      * @param {{}} partialObjectData
      * @param {string} collection
+     * @returns {boolean}
      */
-    updatePartialData(id: string, partialObjectData: {}, collection: string): Promise<void>;
+    updatePartialData(id: string, partialObjectData: {}, collection: string): boolean;
     /**
      * Delete data by id.
      * @param {string} id
      * @param {string} collection
+     * @returns {boolean}
      */
-    deleteById(id: string, collection: string): Promise<void>;
+    deleteById(id: string, collection: string): boolean;
     /**
      * Fetch all data in a collection.
      * @param {string} collection
-     * @returns {Promise<Array<any>>}
+     * @returns {Promise<Array<T>>}
+     * @template T
      */
-    fetchAllData(collection: string): Promise<Array<any>>;
+    fetchAllData<T_4>(collection: string): Promise<T_4[]>;
     /**
      * Select specific fields from the collection; and return all data.
      * @param {string} collection
      * @param {Array<string>} fieldNames
+     * @returns {Array<T>}
+     * @template T
      */
-    selectData(collection: string, fieldNames: Array<string>): Promise<any>;
+    selectData<T_5>(collection: string, fieldNames: Array<string>): T_5[];
     /**
      * Update partial data based on other parameters.
-     * @param {string} fieldName
-     * @param {string} fieldValue
-     * @param {{}} partialObjectData merely an example
+     * @param {string} fieldName The field name.
+     * @param {string} fieldValue The field value to update based on fieldName.
+     * @param {{}} partialObjectData An object of data to update.
      * @param {string} collection
      */
-    updateDataByFieldMatch(fieldName: string, fieldValue: string, partialObjectData: {}, collection: string): Promise<void>;
+    updateDataByFieldMatch(
+        fieldName: string,
+        fieldValue: string,
+        partialObjectData: {},
+        collection: string
+    ): Promise<void>;
     /**
      *
      * @param {string} oldValue

@@ -129,7 +129,8 @@ export class Database {
      * @param {string} fieldName Field we want to select.
      * @param {any} fieldValue Field value we want to find.
      * @param {string} collection Name of the collection.
-     * @returns {Promise<{}>} A single document.
+     * @returns {Promise<T>} A single document.
+     * @template T
      */
     async fetchData(fieldName, fieldValue, collection) {
         if (fieldName === '_id') {
@@ -146,7 +147,8 @@ export class Database {
      * @param {string} fieldName Field we want to modify.
      * @param {any} fieldValue Field value we want to find.
      * @param {string} collection Name of the collection.
-     * @returns {Promise<Array<{}>>} An array of documents.
+     * @returns {Promise<Array<T>>} An array of documents.
+     * @template T
      */
     async fetchAllByField(fieldName, fieldValue, collection) {
         if (fieldName === '_id') {
@@ -170,7 +172,8 @@ export class Database {
      * @param {{}} document
      * @param {string} collection
      * @param {boolean} returnDocument
-     * @returns {Promise<{}>} Document
+     * @returns {Promise<{T}>} Document
+     * @template T
      */
     async insertData(document, collection, returnDocument = false) {
         const id = await (await this.db.collection(collection).insertOne(document)).insertedId;
@@ -187,26 +190,41 @@ export class Database {
      * @param {string} id
      * @param {{}} partialObjectData
      * @param {string} collection
+     * @returns {boolean}
      */
     async updatePartialData(id, partialObjectData, collection) {
-        await this.db
-            .collection(collection)
-            .findOneAndUpdate({ _id: ObjectID(id) }, { $set: { ...partialObjectData } });
+        try {
+            await this.db
+                .collection(collection)
+                .findOneAndUpdate({ _id: ObjectID(id) }, { $set: { ...partialObjectData } });
+
+            return true;
+        } catch (err) {
+            console.error(err);
+            return false;
+        }
     }
 
     /**
      * Delete data by id.
      * @param {string} id
      * @param {string} collection
+     * @returns {boolean}
      */
     async deleteById(id, collection) {
-        await this.db.collection(collection).findOneAndDelete({ _id: ObjectID(id) });
+        try {
+            await this.db.collection(collection).findOneAndDelete({ _id: ObjectID(id) });
+            return true;
+        } catch (err) {
+            return false;
+        }
     }
 
     /**
      * Fetch all data in a collection.
      * @param {string} collection
-     * @returns {Promise<Array<any>>}
+     * @returns {Promise<Array<T>>}
+     * @template T
      */
     async fetchAllData(collection) {
         return await this.db.collection(collection).find().toArray();
@@ -216,6 +234,8 @@ export class Database {
      * Select specific fields from the collection; and return all data.
      * @param {string} collection
      * @param {Array<string>} fieldNames
+     * @returns {Array<T>}
+     * @template T
      */
     async selectData(collection, fieldNames) {
         const selectData = {
@@ -235,9 +255,9 @@ export class Database {
 
     /**
      * Update partial data based on other parameters.
-     * @param {string} fieldName
-     * @param {string} fieldValue
-     * @param {{}} partialObjectData merely an example
+     * @param {string} fieldName The field name.
+     * @param {string} fieldValue The field value to update based on fieldName.
+     * @param {{}} partialObjectData An object of data to update.
      * @param {string} collection
      */
     async updateDataByFieldMatch(fieldName, fieldValue, partialObjectData, collection) {
