@@ -36,69 +36,67 @@ export class Database {
      */
     generateCollections(): Promise<void>;
     /**
-     * @param {String} fieldName Field we want to select.
+     * @param {string} fieldName Field we want to select.
      * @param {any} fieldValue Field value we want to find.
-     * @param {String} collection Name of the collection.
+     * @param {string} collection Name of the collection.
      * @returns {Promise<{}>} A single document.
      */
     fetchData(fieldName: string, fieldValue: any, collection: string): Promise<{}>;
     /**
      * Fetch all with a specific field and a specific value.
-     * @param {String} fieldName Field we want to modify.
+     * @param {string} fieldName Field we want to modify.
      * @param {any} fieldValue Field value we want to find.
-     * @param {String} collection Name of the collection.
-     * @returns {Promise<{}>} An array of documents.
+     * @param {string} collection Name of the collection.
+     * @returns {Promise<Array<{}>>} An array of documents.
      */
-    fetchAllByField(fieldName: string, fieldValue: any, collection: string): Promise<{}>;
+    fetchAllByField(fieldName: string, fieldValue: any, collection: string): Promise<Array<{}>>;
     /**
      * Insert a document and return the ID.
-     * @param {*} document
-     * @param {*} collection
+     * @param {{}} document
+     * @param {string} collection
      * @param {boolean} returnDocument
      * @returns {Promise<{}>} Document
      */
-    insertData(document: any, collection: any, returnDocument?: boolean): Promise<{}>;
+    insertData(document: {}, collection: string, returnDocument?: boolean): Promise<{}>;
     /**
      * Update an ID in the database partially.
-     * @param {*} id
-     * @param {*} partialObjectData
-     * @param {*} collection
+     * @param {string} id
+     * @param {{}} partialObjectData
+     * @param {string} collection
      */
-    updatePartialData(id: any, partialObjectData: any, collection: any): Promise<void>;
+    updatePartialData(id: string, partialObjectData: {}, collection: string): Promise<void>;
     /**
      * Delete data by id.
-     * @param {String} id
-     * @param {String} collection
+     * @param {string} id
+     * @param {string} collection
      */
     deleteById(id: string, collection: string): Promise<void>;
     /**
      * Fetch all data in a collection.
-     * @param {String} collection
+     * @param {string} collection
      * @returns {Promise<Array<any>>}
      */
     fetchAllData(collection: string): Promise<Array<any>>;
     /**
      * Select specific fields from the collection; and return all data.
-     * @param {String} collection
-     * @param {Array<String>} fieldNames
+     * @param {string} collection
+     * @param {Array<string>} fieldNames
      */
     selectData(collection: string, fieldNames: Array<string>): Promise<any>;
     /**
      * Update partial data based on other parameters.
-     * @param {String} fieldName
-     * @param {String} fieldValue
-     * @param {{name: 'stuyk'}} partialObjectData merely an example
-     * @param {String} collection
+     * @param {string} fieldName
+     * @param {string} fieldValue
+     * @param {{}} partialObjectData merely an example
+     * @param {string} collection
      */
-    updateDataByFieldMatch(fieldName: string, fieldValue: string, partialObjectData: {
-        name: 'stuyk';
-    }, collection: string): Promise<void>;
+    updateDataByFieldMatch(fieldName: string, fieldValue: string, partialObjectData: {}, collection: string): Promise<void>;
     /**
      *
-     * @param {String} oldValue
-     * @param {String} fieldName
+     * @param {string} oldValue
+     * @param {string} fieldName
      * @param {any} fieldValue
-     * @param {String} collection
+     * @param {string} collection
      */
     replaceField(oldValue: string, fieldName: string, fieldValue: any, collection: string): Promise<void>;
 }

@@ -126,9 +126,9 @@ export class Database {
     }
 
     /**
-     * @param {String} fieldName Field we want to select.
+     * @param {string} fieldName Field we want to select.
      * @param {any} fieldValue Field value we want to find.
-     * @param {String} collection Name of the collection.
+     * @param {string} collection Name of the collection.
      * @returns {Promise<{}>} A single document.
      */
     async fetchData(fieldName, fieldValue, collection) {
@@ -143,10 +143,10 @@ export class Database {
 
     /**
      * Fetch all with a specific field and a specific value.
-     * @param {String} fieldName Field we want to modify.
+     * @param {string} fieldName Field we want to modify.
      * @param {any} fieldValue Field value we want to find.
-     * @param {String} collection Name of the collection.
-     * @returns {Promise<{}>} An array of documents.
+     * @param {string} collection Name of the collection.
+     * @returns {Promise<Array<{}>>} An array of documents.
      */
     async fetchAllByField(fieldName, fieldValue, collection) {
         if (fieldName === '_id') {
@@ -167,8 +167,8 @@ export class Database {
 
     /**
      * Insert a document and return the ID.
-     * @param {*} document
-     * @param {*} collection
+     * @param {{}} document
+     * @param {string} collection
      * @param {boolean} returnDocument
      * @returns {Promise<{}>} Document
      */
@@ -184,9 +184,9 @@ export class Database {
 
     /**
      * Update an ID in the database partially.
-     * @param {*} id
-     * @param {*} partialObjectData
-     * @param {*} collection
+     * @param {string} id
+     * @param {{}} partialObjectData
+     * @param {string} collection
      */
     async updatePartialData(id, partialObjectData, collection) {
         await this.db
@@ -196,8 +196,8 @@ export class Database {
 
     /**
      * Delete data by id.
-     * @param {String} id
-     * @param {String} collection
+     * @param {string} id
+     * @param {string} collection
      */
     async deleteById(id, collection) {
         await this.db.collection(collection).findOneAndDelete({ _id: ObjectID(id) });
@@ -205,7 +205,7 @@ export class Database {
 
     /**
      * Fetch all data in a collection.
-     * @param {String} collection
+     * @param {string} collection
      * @returns {Promise<Array<any>>}
      */
     async fetchAllData(collection) {
@@ -214,8 +214,8 @@ export class Database {
 
     /**
      * Select specific fields from the collection; and return all data.
-     * @param {String} collection
-     * @param {Array<String>} fieldNames
+     * @param {string} collection
+     * @param {Array<string>} fieldNames
      */
     async selectData(collection, fieldNames) {
         const selectData = {
@@ -235,10 +235,10 @@ export class Database {
 
     /**
      * Update partial data based on other parameters.
-     * @param {String} fieldName
-     * @param {String} fieldValue
-     * @param {{name: 'stuyk'}} partialObjectData merely an example
-     * @param {String} collection
+     * @param {string} fieldName
+     * @param {string} fieldValue
+     * @param {{}} partialObjectData merely an example
+     * @param {string} collection
      */
     async updateDataByFieldMatch(fieldName, fieldValue, partialObjectData, collection) {
         if (fieldName === '_id') {
@@ -252,10 +252,10 @@ export class Database {
 
     /**
      *
-     * @param {String} oldValue
-     * @param {String} fieldName
+     * @param {string} oldValue
+     * @param {string} fieldName
      * @param {any} fieldValue
-     * @param {String} collection
+     * @param {string} collection
      */
     async replaceField(oldValue, fieldName, fieldValue, collection) {
         await this.db
