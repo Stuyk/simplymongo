@@ -48,8 +48,8 @@ export class Database {
      * @param  {string} url mongodb://localhost:27017
      * @param  {string} databasename Name of the database to store collections.
      * @param  {Array<string>} collections Collections to create.
-     * @param  {} username=null
-     * @param  {} password=null
+     * @param  {string | null} username=null
+     * @param  {string | null} password=null
      */
     constructor(url, databasename, collections = [], username = null, password = null) {
         if (instance) {
@@ -127,9 +127,9 @@ export class Database {
 
     /**
      * @param {String} fieldName Field we want to select.
-     * @param {Any} fieldValue Field value we want to find.
+     * @param {any} fieldValue Field value we want to find.
      * @param {String} collection Name of the collection.
-     * @returns {Any} A single document.
+     * @returns {Promise<{}>} A single document.
      */
     async fetchData(fieldName, fieldValue, collection) {
         if (fieldName === '_id') {
@@ -144,9 +144,9 @@ export class Database {
     /**
      * Fetch all with a specific field and a specific value.
      * @param {String} fieldName Field we want to modify.
-     * @param {Any} fieldValue Field value we want to find.
+     * @param {any} fieldValue Field value we want to find.
      * @param {String} collection Name of the collection.
-     * @returns {Array} An array of documents.
+     * @returns {Promise<{}>} An array of documents.
      */
     async fetchAllByField(fieldName, fieldValue, collection) {
         if (fieldName === '_id') {
@@ -169,8 +169,8 @@ export class Database {
      * Insert a document and return the ID.
      * @param {*} document
      * @param {*} collection
-     * @param {Boolean} returnDocument
-     * @returns {{_id, a, b, c}} Document
+     * @param {boolean} returnDocument
+     * @returns {Promise<{}>} Document
      */
     async insertData(document, collection, returnDocument = false) {
         const id = await (await this.db.collection(collection).insertOne(document)).insertedId;
@@ -198,7 +198,6 @@ export class Database {
      * Delete data by id.
      * @param {String} id
      * @param {String} collection
-     * @returns {{}}
      */
     async deleteById(id, collection) {
         await this.db.collection(collection).findOneAndDelete({ _id: ObjectID(id) });
@@ -207,7 +206,7 @@ export class Database {
     /**
      * Fetch all data in a collection.
      * @param {String} collection
-     * @returns {Array<any>}
+     * @returns {Promise<Array<any>>}
      */
     async fetchAllData(collection) {
         return await this.db.collection(collection).find().toArray();
@@ -253,7 +252,7 @@ export class Database {
 
     /**
      *
-     * @param {String} id
+     * @param {String} oldValue
      * @param {String} fieldName
      * @param {any} fieldValue
      * @param {String} collection

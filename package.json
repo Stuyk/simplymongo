@@ -1,6 +1,6 @@
 {
     "name": "simplymongo",
-    "version": "2.0.0",
+    "version": "2.0.1",
     "description": "",
     "main": "index.js",
     "keywords": [
@@ -10,7 +10,8 @@
     "license": "ISC",
     "type": "module",
     "dependencies": {
-        "mongodb": "^3.5.8"
+        "@types/node": "^14.11.2",
+        "mongodb": "^3.6.2"
     },
     "repository": {
         "type": "git",
