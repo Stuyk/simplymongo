@@ -1,11 +1,14 @@
 {
     "name": "simplymongo",
-    "version": "2.0.2",
+    "version": "2.0.3",
     "description": "",
     "main": "index.js",
     "keywords": [
         "mongodb"
     ],
+    "scripts": {
+        "types": "npx typescript index.js --declaration --allowJs --emitDeclarationOnly --outDir types"
+    },
     "author": "stuyk",
     "license": "ISC",
     "type": "module",

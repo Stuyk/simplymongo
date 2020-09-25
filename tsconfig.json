@@ -1,16 +1,17 @@
 {
     "compilerOptions": {
-        "target": "esnext",
-        "module": "esnext",
-        "moduleResolution": "node",
-        "lib": ["es2017", "dom"],
-        "allowJs": true,
-        "checkJs": true,
-        "noEmit": true,
-        "strict": false,
+        "target": "es6",
+        "module": "commonjs",
+        "lib": ["es6"],
+        "noImplicitAny": true,
         "noImplicitThis": true,
-        "alwaysStrict": true,
-        "esModuleInterop": true
+        "strictFunctionTypes": true,
+        "strictNullChecks": true,
+        "baseUrl": ".",
+        "typeRoots": ["."],
+        "types": [],
+        "noEmit": true,
+        "forceConsistentCasingInFileNames": true
     },
-    "include": ["./index.js"]
+    "files": ["types/index.d.ts"]
 }
