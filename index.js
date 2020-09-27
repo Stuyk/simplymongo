@@ -129,7 +129,7 @@ export class Database {
      * @param {string} fieldName Field we want to select.
      * @param {any} fieldValue Field value we want to find.
      * @param {string} collection Name of the collection.
-     * @returns {Promise<T>} A single document.
+     * @returns {Promise<T | null>} A single document.
      * @template T
      */
     async fetchData(fieldName, fieldValue, collection) {
@@ -137,9 +137,8 @@ export class Database {
             fieldValue = new ObjectID(fieldValue);
         }
 
-        const results = await this.db.collection(collection).findOne({ [fieldName]: fieldValue });
-
-        return results;
+        const result = await this.db.collection(collection).findOne({ [fieldName]: fieldValue });
+        return result;
     }
 
     /**
@@ -169,17 +168,18 @@ export class Database {
 
     /**
      * Insert a document and return the ID.
-     * @param {{}} document
+     * @param {T} document
      * @param {string} collection
      * @param {boolean} returnDocument
-     * @returns {Promise<{T}>} Document
+     * @returns {Promise<T | null>} Document
      * @template T
      */
     async insertData(document, collection, returnDocument = false) {
-        const id = await (await this.db.collection(collection).insertOne(document)).insertedId;
+        const newDocument = await this.db.collection(collection).insertOne(document);
+        const id = newDocument.insertedId;
 
         if (!returnDocument) {
-            return id;
+            return null;
         }
 
         return await this.db.collection(collection).findOne({ _id: ObjectID(id) });
@@ -188,9 +188,10 @@ export class Database {
     /**
      * Update an ID in the database partially.
      * @param {string} id
-     * @param {{}} partialObjectData
+     * @param {T} partialObjectData
      * @param {string} collection
      * @returns {boolean}
+     * @template T
      */
     async updatePartialData(id, partialObjectData, collection) {
         try {
@@ -257,8 +258,9 @@ export class Database {
      * Update partial data based on other parameters.
      * @param {string} fieldName The field name.
      * @param {string} fieldValue The field value to update based on fieldName.
-     * @param {{}} partialObjectData An object of data to update.
+     * @param {T} partialObjectData An object of data to update.
      * @param {string} collection
+     * @template T
      */
     async updateDataByFieldMatch(fieldName, fieldValue, partialObjectData, collection) {
         if (fieldName === '_id') {

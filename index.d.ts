@@ -23,13 +23,7 @@ export class Database {
      * @param  {string | null} username=null
      * @param  {string | null} password=null
      */
-    constructor(
-        url: string,
-        databasename: string,
-        collections?: Array<string>,
-        username?: string | null,
-        password?: string | null
-    );
+    constructor(url: string, databasename: string, collections?: Array<string>, username?: string | null, password?: string | null);
     establishingConnection: boolean | undefined;
     /** @type {mongodb.MongoClient} */
     client: any;
@@ -45,10 +39,10 @@ export class Database {
      * @param {string} fieldName Field we want to select.
      * @param {any} fieldValue Field value we want to find.
      * @param {string} collection Name of the collection.
-     * @returns {Promise<T>} A single document.
+     * @returns {Promise<T | null>} A single document.
      * @template T
      */
-    fetchData<T>(fieldName: string, fieldValue: any, collection: string): Promise<T>;
+    fetchData<T>(fieldName: string, fieldValue: any, collection: string): Promise<T | null>;
     /**
      * Fetch all with a specific field and a specific value.
      * @param {string} fieldName Field we want to modify.
@@ -57,30 +51,25 @@ export class Database {
      * @returns {Promise<Array<T>>} An array of documents.
      * @template T
      */
-    fetchAllByField<T_1>(fieldName: string, fieldValue: any, collection: string): Promise<T_1[]>;
+    fetchAllByField<T_2>(fieldName: string, fieldValue: any, collection: string): Promise<T_2[]>;
     /**
      * Insert a document and return the ID.
-     * @param {{}} document
+     * @param {T} document
      * @param {string} collection
      * @param {boolean} returnDocument
-     * @returns {Promise<{T}>} Document
+     * @returns {Promise<T | null>} Document
      * @template T
      */
-    insertData<T_2>(
-        document: {},
-        collection: string,
-        returnDocument?: boolean
-    ): Promise<{
-        T: any;
-    }>;
+    insertData<T_3>(document: T_3, collection: string, returnDocument?: boolean): Promise<T_3 | null>;
     /**
      * Update an ID in the database partially.
      * @param {string} id
-     * @param {{}} partialObjectData
+     * @param {T} partialObjectData
      * @param {string} collection
      * @returns {boolean}
+     * @template T
      */
-    updatePartialData(id: string, partialObjectData: {}, collection: string): boolean;
+    updatePartialData<T_5>(id: string, partialObjectData: T_5, collection: string): boolean;
     /**
      * Delete data by id.
      * @param {string} id
@@ -94,7 +83,7 @@ export class Database {
      * @returns {Promise<Array<T>>}
      * @template T
      */
-    fetchAllData<T_4>(collection: string): Promise<T_4[]>;
+    fetchAllData<T_6>(collection: string): Promise<T_6[]>;
     /**
      * Select specific fields from the collection; and return all data.
      * @param {string} collection
@@ -102,20 +91,16 @@ export class Database {
      * @returns {Array<T>}
      * @template T
      */
-    selectData<T_5>(collection: string, fieldNames: Array<string>): T_5[];
+    selectData<T_7>(collection: string, fieldNames: Array<string>): T_7[];
     /**
      * Update partial data based on other parameters.
      * @param {string} fieldName The field name.
      * @param {string} fieldValue The field value to update based on fieldName.
-     * @param {{}} partialObjectData An object of data to update.
+     * @param {T} partialObjectData An object of data to update.
      * @param {string} collection
+     * @template T
      */
-    updateDataByFieldMatch(
-        fieldName: string,
-        fieldValue: string,
-        partialObjectData: {},
-        collection: string
-    ): Promise<void>;
+    updateDataByFieldMatch<T_8>(fieldName: string, fieldValue: string, partialObjectData: T_8, collection: string): Promise<void>;
     /**
      *
      * @param {string} oldValue
