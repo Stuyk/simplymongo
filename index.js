@@ -113,12 +113,10 @@ export class Database {
 
         for (let i = 0; i < this.collections.length; i++) {
             const collectionName = this.collections[i];
-            await this.db.createCollection(collectionName, {}, (err, res) => {
-                if (err) {
-                    console.log(`[MongoDB] Collection '${collectionName}' exists. (${err.code}: ${err.codeName})`);
-                } else {
-                    console.log(`[MongoDB] Created new collection '${collectionName}'`);
-                }
+            await this.db.createCollection(collectionName).then(() => {
+                console.log(`[MongoDB] Created new collection '${collectionName}'`);
+            }).catch((e) => {
+                console.log(`[MongoDB] Collection '${collectionName}' exists. (${e.code}: ${e.codeName})`);
             });
         }
 
