@@ -24,11 +24,11 @@ export class Database {
      * @param  {string | null} password=null
      */
     constructor(url: string, databasename: string, collections?: Array<string>, username?: string | null, password?: string | null);
-    establishingConnection: boolean | undefined;
+    establishingConnection: boolean;
     /** @type {mongodb.MongoClient} */
     client: any;
-    collections: string[] | undefined;
-    databaseName: string | undefined;
+    collections: string[];
+    databaseName: string;
     establishConnection(): Promise<void>;
     db: any;
     /**
@@ -71,6 +71,15 @@ export class Database {
      */
     updatePartialData<T_5>(id: string, partialObjectData: T_5, collection: string): boolean;
     /**
+     * Update an ID in the database partially, with custom aggregation.
+     * @param {string} id
+     * @param {T} partialObjectData
+     * @param {string} collection
+     * @returns {boolean}
+     * @template T
+     */
+    updatePartialDataAggregation<T_6>(id: string, partialObjectData: T_6, collection: string): boolean;
+    /**
      * Delete data by id.
      * @param {string} id
      * @param {string} collection
@@ -83,7 +92,7 @@ export class Database {
      * @returns {Promise<Array<T>>}
      * @template T
      */
-    fetchAllData<T_6>(collection: string): Promise<T_6[]>;
+    fetchAllData<T_7>(collection: string): Promise<T_7[]>;
     /**
      * Select specific fields from the collection; and return all data.
      * @param {string} collection
@@ -91,7 +100,7 @@ export class Database {
      * @returns {Array<T>}
      * @template T
      */
-    selectData<T_7>(collection: string, fieldNames: Array<string>): T_7[];
+    selectData<T_8>(collection: string, fieldNames: Array<string>): T_8[];
     /**
      * Update partial data based on other parameters.
      * @param {string} fieldName The field name.
@@ -100,7 +109,7 @@ export class Database {
      * @param {string} collection
      * @template T
      */
-    updateDataByFieldMatch<T_8>(fieldName: string, fieldValue: string, partialObjectData: T_8, collection: string): Promise<void>;
+    updateDataByFieldMatch<T_9>(fieldName: string, fieldValue: string, partialObjectData: T_9, collection: string): Promise<void>;
     /**
      *
      * @param {string} oldValue
