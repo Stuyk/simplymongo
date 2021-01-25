@@ -71,6 +71,15 @@ export class Database {
      */
     updatePartialData<T_5>(id: string, partialObjectData: T_5, collection: string): boolean;
     /**
+     * Update an ID in the database partially, with custom aggregation.
+     * @param {string} id
+     * @param {T} partialObjectData
+     * @param {string} collection
+     * @returns {boolean}
+     * @template T
+     */
+    updatePartialDataAggregation<T_5>(id: string, partialObjectData: T_5, collection: string): boolean;
+    /**
      * Delete data by id.
      * @param {string} id
      * @param {string} collection
