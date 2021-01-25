@@ -113,11 +113,14 @@ export class Database {
 
         for (let i = 0; i < this.collections.length; i++) {
             const collectionName = this.collections[i];
-            await this.db.createCollection(collectionName).then(() => {
-                console.log(`[MongoDB] Created new collection '${collectionName}'`);
-            }).catch((e) => {
-                console.log(`[MongoDB] Collection '${collectionName}' exists. (${e.code}: ${e.codeName})`);
-            });
+            await this.db
+                .createCollection(collectionName)
+                .then(() => {
+                    console.log(`[MongoDB] Created new collection '${collectionName}'`);
+                })
+                .catch((e) => {
+                    console.log(`[MongoDB] Collection '${collectionName}' exists. (${e.code}: ${e.codeName})`);
+                });
         }
 
         console.log(`[MongoDB] Connection Complete! Utilizing ${this.collections.length} collections.`);
@@ -196,6 +199,25 @@ export class Database {
             await this.db
                 .collection(collection)
                 .findOneAndUpdate({ _id: ObjectID(id) }, { $set: { ...partialObjectData } });
+
+            return true;
+        } catch (err) {
+            console.error(err);
+            return false;
+        }
+    }
+
+    /**
+     * Update an ID in the database partially, with custom aggregation.
+     * @param {string} id
+     * @param {T} partialObjectData
+     * @param {string} collection
+     * @returns {boolean}
+     * @template T
+     */
+    async updatePartialDataAggregation(id, partialObjectData, collection) {
+        try {
+            await this.db.collection(collection).findOneAndUpdate({ _id: ObjectID(id) }, partialObjectData);
 
             return true;
         } catch (err) {
