@@ -31,9 +31,6 @@ export class Database {
     databaseName: string;
     establishConnection(): Promise<void>;
     db: any;
-    /**
-     * Used to generate collections.
-     */
     generateCollections(): Promise<void>;
     /**
      * @param {string} fieldName Field we want to select.
