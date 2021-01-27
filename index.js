@@ -102,28 +102,46 @@ export class Database {
         }
     }
 
-    /**
-     * Used to generate collections.
-     */
     async generateCollections() {
         if (this.collections.length <= 0) {
             console.log(`[MongoDB] No collections were specified for creation.`);
             return;
         }
 
-        for (let i = 0; i < this.collections.length; i++) {
-            const collectionName = this.collections[i];
-            await this.db
-                .createCollection(collectionName)
-                .then(() => {
-                    console.log(`[MongoDB] Created new collection '${collectionName}'`);
-                })
-                .catch((e) => {
-                    console.log(`[MongoDB] Collection '${collectionName}' exists. (${e.code}: ${e.codeName})`);
-                });
+        const database = this.db;
+        const collectionCursor = database.listCollections();
+        const collections = await collectionCursor.toArray(); // { name: 'whatever' }
+        let totalCollections = collections.length;
+
+        if (collections.length <= 0) {
+            for (let i = 0; i < this.collections.length; i++) {
+                const collectionName = this.collections[i];
+                const newCollection = database.createCollection(collectionName);
+                console.log(`[MongoDB] Created new collection '${collectionName}'`);
+            }
+
+            console.log(`[MongoDB] Connection Complete! Utilizing ${totalCollections} collections.`);
+            return;
         }
 
-        console.log(`[MongoDB] Connection Complete! Utilizing ${this.collections.length} collections.`);
+        const collectionsNotFound = this.collections.filter((collectionName) => {
+            return !collections.find((existingData) => existingData && existingData.name === collectionName);
+        });
+
+        if (collectionsNotFound.length <= 0) {
+            console.log(`[MongoDB] Connection Complete! Utilizing ${totalCollections} collections.`);
+            return;
+        }
+
+        for (let i = 0; i < collectionsNotFound.length; i++) {
+            const collectionName = collectionsNotFound[i];
+            const newCollection = database.createCollection(collectionName);
+            console.log(`[MongoDB] Created new collection '${collectionName}'`);
+        }
+
+        console.log(
+            `[MongoDB] Connection Complete! Utilizing ${totalCollections + collectionsNotFound.length} collections.`
+        );
     }
 
     /**
