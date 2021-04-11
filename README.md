@@ -6,6 +6,8 @@ Originally created for the https://altv.mp/ community.
 
 [⌨️ Learn how to script for alt:V](https://altv.stuyk.com/)
 
+[💡 Need a Roleplay Script? Try Athena!](https://gtavathena.com/)
+
 # Installation
 
 ## Prerequisites
