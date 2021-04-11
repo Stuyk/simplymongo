@@ -4,6 +4,8 @@ Store your client data in collections and fetch and modify data easily.
 
 Originally created for the https://altv.mp/ community.
 
+[⌨️ Learn how to script for alt:V](https://altv.stuyk.com/)
+
 # Installation
 
 ## Prerequisites
