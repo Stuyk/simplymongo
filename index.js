@@ -209,7 +209,7 @@ export class Database {
      * @param {string} id
      * @param {T} partialObjectData
      * @param {string} collection
-     * @returns {boolean}
+     * @returns {Promise<boolean>}
      * @template T
      */
     async updatePartialData(id, partialObjectData, collection) {
@@ -230,7 +230,7 @@ export class Database {
      * @param {string} id
      * @param {T} partialObjectData
      * @param {string} collection
-     * @returns {boolean}
+     * @returns {Promise<boolean>}
      * @template T
      */
     async updatePartialDataAggregation(id, partialObjectData, collection) {
@@ -248,7 +248,7 @@ export class Database {
      * Delete data by id.
      * @param {string} id
      * @param {string} collection
-     * @returns {boolean}
+     * @returns {Promise<boolean>}
      */
     async deleteById(id, collection) {
         try {
@@ -273,7 +273,7 @@ export class Database {
      * Select specific fields from the collection; and return all data.
      * @param {string} collection
      * @param {Array<string>} fieldNames
-     * @returns {Array<T>}
+     * @returns {Promise<Array<T>>}
      * @template T
      */
     async selectData(collection, fieldNames) {

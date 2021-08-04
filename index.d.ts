@@ -48,7 +48,7 @@ export class Database {
      * @returns {Promise<Array<T>>} An array of documents.
      * @template T
      */
-    fetchAllByField<T_2>(fieldName: string, fieldValue: any, collection: string): Promise<T_2[]>;
+    fetchAllByField<T_1>(fieldName: string, fieldValue: any, collection: string): Promise<T_1[]>;
     /**
      * Insert a document and return the ID.
      * @param {T} document
@@ -57,47 +57,47 @@ export class Database {
      * @returns {Promise<T | null>} Document
      * @template T
      */
-    insertData<T_3>(document: T_3, collection: string, returnDocument?: boolean): Promise<T_3 | null>;
+    insertData<T_2>(document: T_2, collection: string, returnDocument?: boolean): Promise<T_2 | null>;
     /**
      * Update an ID in the database partially.
      * @param {string} id
      * @param {T} partialObjectData
      * @param {string} collection
-     * @returns {boolean}
+     * @returns {Promise<boolean>}
      * @template T
      */
-    updatePartialData<T_5>(id: string, partialObjectData: T_5, collection: string): boolean;
+    updatePartialData<T_3>(id: string, partialObjectData: T_3, collection: string): Promise<boolean>;
     /**
      * Update an ID in the database partially, with custom aggregation.
      * @param {string} id
      * @param {T} partialObjectData
      * @param {string} collection
-     * @returns {boolean}
+     * @returns {Promise<boolean>}
      * @template T
      */
-    updatePartialDataAggregation<T_6>(id: string, partialObjectData: T_6, collection: string): boolean;
+    updatePartialDataAggregation<T_4>(id: string, partialObjectData: T_4, collection: string): Promise<boolean>;
     /**
      * Delete data by id.
      * @param {string} id
      * @param {string} collection
-     * @returns {boolean}
+     * @returns {Promise<boolean>}
      */
-    deleteById(id: string, collection: string): boolean;
+    deleteById(id: string, collection: string): Promise<boolean>;
     /**
      * Fetch all data in a collection.
      * @param {string} collection
      * @returns {Promise<Array<T>>}
      * @template T
      */
-    fetchAllData<T_7>(collection: string): Promise<T_7[]>;
+    fetchAllData<T_5>(collection: string): Promise<T_5[]>;
     /**
      * Select specific fields from the collection; and return all data.
      * @param {string} collection
      * @param {Array<string>} fieldNames
-     * @returns {Array<T>}
+     * @returns {Promise<Array<T>>}
      * @template T
      */
-    selectData<T_8>(collection: string, fieldNames: Array<string>): T_8[];
+    selectData<T_6>(collection: string, fieldNames: Array<string>): Promise<T_6[]>;
     /**
      * Update partial data based on other parameters.
      * @param {string} fieldName The field name.
@@ -106,7 +106,7 @@ export class Database {
      * @param {string} collection
      * @template T
      */
-    updateDataByFieldMatch<T_9>(fieldName: string, fieldValue: string, partialObjectData: T_9, collection: string): Promise<void>;
+    updateDataByFieldMatch<T_7>(fieldName: string, fieldValue: string, partialObjectData: T_7, collection: string): Promise<void>;
     /**
      *
      * @param {string} oldValue
