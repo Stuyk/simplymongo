@@ -1,6 +1,6 @@
 {
     "name": "simplymongo",
-    "version": "2.1.1",
+    "version": "2.1.2",
     "description": "A super simple MongoDB wrapper. Built for quick database building.",
     "main": "index.js",
     "keywords": [
